@@ -2,7 +2,7 @@
 
 const chalk = require('chalk');
 const emoji = require('node-emoji');
-const ProgressBar = require('progress');
+const progress = require('progress-string');
 const imgcat = require('imgcat');
 const semver = require('semver');
 const osascripts = require('../osascripts/index');
@@ -86,15 +86,20 @@ function printSearchResults(resultType, data){
 }
 
 function printDurationProgress(result){
-	var statusButton = result.status === 'playing' ? ':arrow_forward:' : ':double_vertical_bar:';
-	statusButton = emoji.emojify(statusButton);
-	new ProgressBar(`${statusButton}  ${result.status} [:bar] ${result.position} of ${result.duration}`, {
-		complete: '=',
-		incomplete: ' ',
-		width: 50,
-		total: result.durationSecs
-	}).tick(result.positionSecs);
-	console.log();
+        var statusButton = result.status === 'playing' ? ':arrow_forward:' : ':double_vertical_bar:';
+        statusButton = emoji.emojify(statusButton);
+
+        var bar = progress({
+                complete: '=',
+                incomplete: ' ',
+                width: 50,
+                total: result.durationSecs,
+                style: function (complete, incomplete){
+                        return complete + incomplete
+                }
+        })
+        console.log(`${statusButton}   ${result.status} [${bar(result.positionSecs)}] ${result.position} of ${result.duration}`)
+        console.log();
 }
 
 function printPlayerStatus(result){
