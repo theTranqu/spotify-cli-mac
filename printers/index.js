@@ -86,20 +86,19 @@ function printSearchResults(resultType, data){
 }
 
 function printDurationProgress(result){
-        var statusButton = result.status === 'playing' ? ':arrow_forward:' : ':double_vertical_bar:';
-        statusButton = emoji.emojify(statusButton);
-
-        var bar = progress({
-                complete: '=',
-                incomplete: ' ',
-                width: 50,
-                total: result.durationSecs,
-                style: function (complete, incomplete){
-                        return complete + incomplete
-                }
-        })
-        console.log(`${statusButton}   ${result.status} [${bar(result.positionSecs)}] ${result.position} of ${result.duration}`)
-        console.log();
+	var statusButton = result.status === 'playing' ? ':arrow_forward:' : ':double_vertical_bar:';
+	statusButton = emoji.emojify(statusButton);
+	var bar = progress({
+		complete: '=',
+		incomplete: ' ',
+		width: 50,
+		total: result.durationSecs,
+		style: function (complete, incomplete){
+			return complete + incomplete;
+		}
+	});
+	console.log(`${statusButton}   ${result.status} [${bar(result.positionSecs)}] ${result.position} of ${result.duration}`);
+	console.log();
 }
 
 function printPlayerStatus(result){
@@ -129,12 +128,17 @@ function printPrevious(result){
 }
 
 function printVolume(volume){
-	new ProgressBar(`Volume: [:bar] ${chalk.green(volume)}`, {
+	var bar = progress({
 		complete: '=',
 		incomplete: ' ',
 		width: 50,
-		total: 100
-	}).tick(volume);
+		total: 100,
+		style: function (complete, incomplete){
+			return complete + incomplete;
+		}
+	});
+
+	console.log(`Volume: [${bar(volume)}] ${chalk.green(volume)}`);
 	console.log();
 }
 
