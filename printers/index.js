@@ -111,6 +111,7 @@ function printPlayerStatus(result){
 	console.log();
 	printDurationProgress(result);
 	printArtwork();
+	console.log();
 }
 
 function printNext(result){
